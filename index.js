@@ -59,7 +59,15 @@ module.exports = {
           if ((typeof value[0]) !== 'object') {
             good = true;
           }
-        } else if ((typeof value) !== 'object') {
+        } else if ((typeof value) === 'object') {
+          if (value.type === 'area') {
+            const text = self.apos.areas.plaintext(value).trim();
+            if (text) {
+              doc[field] = text;
+              good = true;
+            }
+          }
+        } else {
           good = true;
         }
         if (good) {
