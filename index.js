@@ -91,12 +91,20 @@ module.exports = {
               const fSchema = schema.find(f => f.name === field);
               if (fSchema) {
                 // TODO: handle function for resolving choices
-                // TODO: handle indexing checkboxes fields
                 if (Array.isArray(fSchema.choices)) {
-                  const choice = fSchema.choices.find(c => c.value === doc[field]);
-                  if (choice) {
-                    body[field + 'Label'] = choice.label;
-                    body[field + 'LabelESExact'] = choice.label;
+                  if (Array.isArray(doc[field]) && doc[field].length) {
+                    const labels = doc[field].map(val => {
+                      const choice = fSchema.choices.find(c => c.value === val);
+                      return choice.label;
+                    });
+                    body[field + 'Label'] = labels;
+                    body[field + 'LabelESExact'] = labels;
+                  } else {
+                    const choice = fSchema.choices.find(c => c.value === doc[field]);
+                    if (choice) {
+                      body[field + 'Label'] = choice.label;
+                      body[field + 'LabelESExact'] = choice.label;
+                    }
                   }
                 }
               }
