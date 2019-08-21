@@ -14,6 +14,10 @@ module.exports = {
     const mandatoryFields = [ 'slug', 'path', 'type', 'tags' ];
     self.fields = self.fields.concat(mandatoryFields);
     self.fields = _.uniq(self.fields);
+
+    // The fields which we want to index the labels associated with their values
+    self.indexFieldLabels = self.options.indexFieldLabels;
+
     self.apos.define('apostrophe-cursor', require('./lib/cursor.js'));
     self.connect = function(callback) {
       self.baseName = self.options.baseName || self.apos.shortName;
@@ -77,6 +81,26 @@ module.exports = {
           // it's too large to be requested that way anyway
           if (((!doc[field]) || JSON.stringify(doc[field]).length < 4096)) {
             body[field + 'ESExact'] = doc[field];
+          }
+          // If indexing labels for select and fields is desired.
+          // Indexing checkboxes fields is not supported yet.
+          if (self.indexFieldLabels && doc[field] && self.indexFieldLabels.includes(field)) {
+            const mgr = self.apos.docs.getManager(doc.type);
+            if (mgr) {
+              const schema = self.apos.schemas.compose(mgr.options, mgr);
+              const fSchema = schema.find(f => f.name === field);
+              if (fSchema) {
+                // TODO: handle function for resolving choices
+                // TODO: handle indexing checkboxes fields
+                if (Array.isArray(fSchema.choices)) {
+                  const choice = fSchema.choices.find(c => c.value === doc[field]);
+                  if (choice) {
+                    body[field + 'Label'] = choice.label;
+                    body[field + 'LabelESExact'] = choice.label;
+                  }
+                }
+              }
+            }
           }
         }
       });
@@ -182,6 +206,14 @@ module.exports = {
           properties[field + 'ESExact'] = {
             type: 'keyword'
           };
+          if (self.indexFieldLabels.includes(field)) {
+            properties[field + 'Label'] = {
+              type: 'text'
+            };
+            properties[field + 'LabelESExact'] = {
+              type: 'keyword'
+            };
+          }
         });
         return self.client.indices.create({
           index: self.getLocaleIndex(locale),
