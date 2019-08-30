@@ -210,24 +210,24 @@ module.exports = {
         _.each(self.fields, function(field) {
           properties[field] = {
             type: 'text',
-            analyzer: self.option.analyzer,
-            search_analyzer: self.option.analyzer
+            analyzer: self.option.analyzer(locale),
+            search_analyzer: self.option.analyzer(locale)
           };
           properties[field + 'ESExact'] = {
             type: 'keyword',
-            analyzer: self.option.analyzer,
-            search_analyzer: self.option.analyzer
+            analyzer: self.option.analyzer(locale),
+            search_analyzer: self.option.analyzer(locale)
           };
           if (self.indexFieldLabels.includes(field)) {
             properties[field + 'Label'] = {
               type: 'text',
-              analyzer: self.option.analyzer,
-              search_analyzer: self.option.analyzer
+              analyzer: self.option.analyzer(locale),
+              search_analyzer: self.option.analyzer(locale)
             };
             properties[field + 'LabelESExact'] = {
               type: 'keyword',
-              analyzer: self.option.analyzer,
-              search_analyzer: self.option.analyzer
+              analyzer: self.option.analyzer(locale),
+              search_analyzer: self.option.analyzer(locale)
             };
           }
         });
