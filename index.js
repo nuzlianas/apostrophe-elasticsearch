@@ -210,8 +210,8 @@ module.exports = {
         _.each(self.fields, function(field) {
           properties[field] = {
             type: 'text',
-            analyzer: self.options.analyzers,
-            search_analyzer: self.options.analyzers
+            analyzer: 'mybiz4wrd_analyzer',
+            search_analyzer: 'mybiz4wrd_analyzer'
           };
           properties[field + 'ESExact'] = {
             type: 'keyword',
@@ -221,13 +221,13 @@ module.exports = {
           if (self.indexFieldLabels.includes(field)) {
             properties[field + 'Label'] = {
               type: 'text',
-              analyzer: self.options.analyzers,
-              search_analyzer: self.options.analyzers
+              analyzer: 'mybiz4wrd_analyzer',
+              search_analyzer: 'mybiz4wrd_analyzer'
             };
             properties[field + 'LabelESExact'] = {
               type: 'keyword',
-              analyzer: self.options.analyzers,
-              search_analyzer: self.options.analyzers
+              analyzer: 'mybiz4wrd_analyzer',
+              search_analyzer: 'mybiz4wrd_analyzer'
             };
           }
         });
