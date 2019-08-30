@@ -211,23 +211,23 @@ module.exports = {
           properties[field] = {
             type: 'text',
             analyzer: self.options.analyzer,
-            search_analyzer: self.option.analyzer(locale)
+            search_analyzer: self.options.analyzer
           };
           properties[field + 'ESExact'] = {
             type: 'keyword',
-            analyzer: self.option.analyzer(locale),
-            search_analyzer: self.option.analyzer(locale)
+            analyzer: self.options.analyzer,
+            search_analyzer: self.options.analyzer
           };
           if (self.indexFieldLabels.includes(field)) {
             properties[field + 'Label'] = {
               type: 'text',
-              analyzer: self.option.analyzer(locale),
-              search_analyzer: self.option.analyzer(locale)
+              analyzer: self.options.analyzer,
+              search_analyzer: self.options.analyzer
             };
             properties[field + 'LabelESExact'] = {
               type: 'keyword',
-              analyzer: self.option.analyzer(locale),
-              search_analyzer: self.option.analyzer(locale)
+              analyzer: self.options.analyzer,
+              search_analyzer: self.options.analyzer
             };
           }
         });
