@@ -210,7 +210,7 @@ module.exports = {
         _.each(self.fields, function(field) {
           properties[field] = {
             type: 'text',
-            analyzer: self.option.analyzer(locale),
+            analyzer: self.options.analyzer,
             search_analyzer: self.option.analyzer(locale)
           };
           properties[field + 'ESExact'] = {
