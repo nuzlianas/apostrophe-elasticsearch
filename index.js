@@ -209,17 +209,25 @@ module.exports = {
         const properties = {};
         _.each(self.fields, function(field) {
           properties[field] = {
-            type: 'text'
+            type: 'text',
+            analyzer: self.option.analyzer,
+            search_analyzer: self.option.analyzer
           };
           properties[field + 'ESExact'] = {
-            type: 'keyword'
+            type: 'keyword',
+            analyzer: self.option.analyzer,
+            search_analyzer: self.option.analyzer
           };
           if (self.indexFieldLabels.includes(field)) {
             properties[field + 'Label'] = {
-              type: 'text'
+              type: 'text',
+              analyzer: self.option.analyzer,
+              search_analyzer: self.option.analyzer
             };
             properties[field + 'LabelESExact'] = {
-              type: 'keyword'
+              type: 'keyword',
+              analyzer: self.option.analyzer,
+              search_analyzer: self.option.analyzer
             };
           }
         });
